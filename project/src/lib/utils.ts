@@ -8,8 +8,8 @@ const redirectUrl = isLocalEnv ? "http://localhost:3000" : "https://petsync.verc
 
 /**
  * Sign in with OAuthentication
- * @param authProvider 
- * @returns 
+ * @param authProvider the OAuth provider, either Google or Apple.
+ * @returns Redirects the user to OAuth provider screen.
  */
 export const signIn = async (authProvider: Provider) => {
     const supabase = createClient()
