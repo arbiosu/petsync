@@ -275,3 +275,9 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
+
+export interface HouseholdContent {
+  name: string;
+  admin: string;
+}

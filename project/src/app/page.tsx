@@ -1,22 +1,23 @@
 "use server";
 
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { SignOutForm } from "@/components/Auth"
-
+import { MyHouseholds, CreateHouseholdForm } from '@/components/Household';
+import { getUser } from "@/lib/supabase/model"
 
 export default async function Home() {
-  const supabase = await createClient()
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await getUser()
 
   if (!user) {
-    return redirect('/login')
+    return redirect('/auth/login')
   }
   return (
     <div>
       <h1>Welcome to Petsync</h1>
+      <MyHouseholds user={user} />
+      <CreateHouseholdForm user={user} />
       <SignOutForm />
     </div>
   )

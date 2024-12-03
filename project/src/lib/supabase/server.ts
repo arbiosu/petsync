@@ -4,8 +4,7 @@ import { Database } from '@/lib/types/supabase'
 
 
 /**
- * Supabase SSR client 
- * to be run server-side
+ * Supabase SSR client for user sessions
  */
 export async function createClient() {
   const cookieStore = await cookies()
@@ -31,5 +30,16 @@ export async function createClient() {
         },
       },
     }
+  )
+}
+
+/**
+ * Supabase SSR client for database services
+ * @returns 
+ */
+export async function serviceClient() {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_KEY!,
   )
 }
