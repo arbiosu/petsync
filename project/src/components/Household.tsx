@@ -5,6 +5,14 @@ import { createHousehold, getHouseholdsForUser } from "@/lib/supabase/model"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 import { HousePlus } from "lucide-react"
 
 /**
@@ -63,6 +71,30 @@ export async function MyHouseholds({ user }: { user: User }) {
         console.log(error)
         return redirect('/households/error')
     }
-    console.log(data)
-    
+
+
+    return (
+        <div>
+            {data && data.length > 0 ? (
+                data.map((info, index) => (
+                    <div key={index}>
+                        <Card className="w-[380px]">
+                            <CardHeader>
+                                <CardTitle>{info.households?.name}</CardTitle>
+                                <CardDescription>Petsynced Since: {info.households?.created_at}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <p>Your Role: {info.role}</p>
+                            </CardContent>
+                            <CardFooter>
+                                <p>Member since: {info.joined_at}</p>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                ))
+            ) : (
+                <h1>You are not a member of any Households!</h1>
+            )}
+        </div>
+    )
 }
