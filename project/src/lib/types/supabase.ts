@@ -42,7 +42,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          household_id?: number
+          household_id: number
           joined_at?: string
           role?: string | null
           user_id?: string
@@ -95,7 +95,7 @@ export type Database = {
           id: number
           name: string
           notes: string | null
-          type: number | null
+          type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -105,7 +105,7 @@ export type Database = {
           id?: number
           name?: string
           notes?: string | null
-          type?: number | null
+          type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -115,7 +115,7 @@ export type Database = {
           id?: number
           name?: string
           notes?: string | null
-          type?: number | null
+          type?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -276,8 +276,14 @@ export type CompositeTypes<
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
-
 export interface HouseholdContent {
   name: string;
   admin: string;
+}
+
+export interface PetContent {
+  name: string;
+  birthdate: string;
+  type: string;
+  household_id: number;
 }
