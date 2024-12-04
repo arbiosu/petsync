@@ -3,7 +3,6 @@ import { HouseholdContent } from "@/lib/types/supabase"
 import { redirect } from "next/navigation"
 import { createHousehold, getHouseholdsForUser } from "@/lib/supabase/model"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -18,6 +17,7 @@ import { HousePlus } from "lucide-react"
 /**
  * The form to create a new Household.
  * The current logged in user will be assigned as the Household admin
+ * TODO: css
  * @param user the currently logged in user
  * @returns A new household, redirects the user to the /households page
  */
@@ -46,7 +46,6 @@ export async function CreateHouseholdForm({ user }: { user: User }) {
         <div>
             <h1>Create a new Household</h1>
             <form action={addHousehold}>
-                <Label htmlFor="name">Household Name</Label>
                 <Input name="name" placeholder="Name of your new Household" />
                 <Button type="submit">
                     <HousePlus /> Create a new Household
@@ -58,6 +57,8 @@ export async function CreateHouseholdForm({ user }: { user: User }) {
 
 /**
  * Dashboard diplaying all of a user's households
+ * If user is not a member of any households, show the create household form
+ * TODO: css
  * @param param0 
  * @returns 
  */
@@ -71,7 +72,6 @@ export async function MyHouseholds({ user }: { user: User }) {
         console.log(error)
         return redirect('/households/error')
     }
-
 
     return (
         <div>
@@ -93,7 +93,10 @@ export async function MyHouseholds({ user }: { user: User }) {
                     </div>
                 ))
             ) : (
-                <h1>You are not a member of any Households!</h1>
+                <div>
+                    <h1>You are not a member of any Households!</h1>
+                    <CreateHouseholdForm user={user} />
+                </div>
             )}
         </div>
     )

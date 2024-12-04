@@ -1,9 +1,6 @@
-"use client"
-
 import { Provider } from '@supabase/supabase-js'
 import { KeySquare, Apple } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { signIn } from '@/lib/utils'
 
 type OAuthProvider = {
     name:           Provider;
@@ -41,15 +38,20 @@ export function OAuthButtons() {
 
     return (
         <>
-        {oAuthProviders.map((provider, index) => 
-        <Button 
-        key={index}
-        variant="outline"
-        className="w-full flex items-center justify-center gap-2"
-        onClick={async () => {
-            await signIn(provider.name)
-        }}
-        >{provider.icon} Login in with {provider.displayName}</Button>)}
+            {oAuthProviders.map((provider, index) => (
+                <form
+                    key={index}
+                    action={`/auth/signin?provider=${provider.name}`}
+                    method='post'
+                >
+                    <Button 
+                        variant="outline"
+                        className="w-full flex items-center justify-center gap-2"
+                    >
+                        {provider.icon} Login with {provider.displayName}
+                    </Button>
+                </form>
+            ))}
         </>
     )
 }
