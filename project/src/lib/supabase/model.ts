@@ -1,9 +1,8 @@
 import { createServiceClient } from "@/lib/supabase/service"
 import { createClient } from "@/lib/supabase/server"
-import { HouseholdContent } from "@/lib/types/supabase"
+import { HouseholdContent, PetContent } from "@/lib/types/supabase"
 
-const supabase = await createServiceClient()
-const sb = await createClient()
+// Cannot set supabase clients as constants because of dynamic routing
 
 /**
  * Gets the currently logged in user.
@@ -11,7 +10,8 @@ const sb = await createClient()
  * @returns the User object or null.
  */
 export async function getUser() {
-    return await sb.auth.getUser()
+    const supabase = await createClient()
+    return await supabase.auth.getUser()
 }
 
 /**
@@ -21,6 +21,7 @@ export async function getUser() {
  * @returns 
  */
 export async function getHouseholdsForUser(userId: string) {
+    const supabase = await createServiceClient()
     return await supabase
     .from('household_users')
     .select(`
@@ -41,10 +42,38 @@ export async function getHouseholdsForUser(userId: string) {
  * @returns
  */
 export async function getAllMembersOfHousehold(householdId: number) {
+    const supabase = await createServiceClient()
     return await supabase
     .from('household_users')
     .select('user_id')
     .eq('household_id', householdId)
+}
+
+export async function getAllHouseholdInformation(householdId: number) {
+    const supabase = await createServiceClient()
+    return await supabase
+    .from('households')
+    .select(`
+        *,
+        household_users (
+            user_id,
+            joined_at,
+            role
+        ),
+        pets (
+            id,
+            name,
+            birthdate,
+            tasks (
+                id,
+                task_type,
+                notes,
+                timestamp
+            )
+        )
+    `)
+    .eq('id', householdId)
+    .single()
 }
 
 /**
@@ -53,6 +82,7 @@ export async function getAllMembersOfHousehold(householdId: number) {
  * @returns 
  */
 export async function getHouseholdById(householdId: number) {
+    const supabase = await createServiceClient()
     return await supabase
     .from('households')
     .select()
@@ -66,7 +96,20 @@ export async function getHouseholdById(householdId: number) {
  * @returns an error or null
  */
 export async function createHousehold(content: HouseholdContent) {
+    const supabase = await createServiceClient()
     return await supabase
     .from('households')
+    .insert(content)
+}
+
+/**
+ * Creates a new Pet
+ * @param content 
+ * @returns 
+ */
+export async function createPet(content: PetContent) {
+    const supabase = await createServiceClient()
+    return await supabase
+    .from('pets')
     .insert(content)
 }
