@@ -22,14 +22,17 @@ export async function getUser() {
  */
 export async function getHouseholdsForUser(userId: string) {
     return await supabase
-    .from('households')
+    .from('household_users')
     .select(`
-        name,
-        household_users (
-        user_id
+        joined_at,
+        role,
+        households (
+            id,
+            created_at,
+            name
         )
     `)
-    .eq('household_users.user_id', userId)
+    .eq('user_id', userId)
 }
 
 /**
