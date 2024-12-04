@@ -7,5 +7,4 @@ export default async function Page() {
             <OAuthButtons />
         </div>
     )
-
 }
